@@ -404,7 +404,10 @@ p { text-wrap: pretty; }
 /* ==========================================================================
    CTA BAND
    ========================================================================== */
-.cta-band { background: linear-gradient(150deg, var(--brand), var(--navy-900)); color: #fff; }
+/* Gradiente vertical (no diagonal): abajo del todo llega exactamente al
+   mismo color que el fondo del footer que sigue, para que el empalme
+   entre ambas secciones sea parejo en todo el ancho, no solo en una punta. */
+.cta-band { background: linear-gradient(180deg, var(--brand) 0%, var(--navy-900) 100%); color: #fff; }
 .cta-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem;
   padding: clamp(2.5rem, 5vw, 4rem) 0; }
 .cta-inner h2 { color: #fff; font-size: var(--step-3); font-weight: 800; }
@@ -443,7 +446,10 @@ p { text-wrap: pretty; }
 }
 .fab[data-visible] { transform: translateY(0); opacity: 1; }
 .fab:hover { background: var(--whatsapp-600); }
-.fab svg { width: 30px; height: 30px; }
+/* El glyph del ícono no está perfectamente centrado en su propio viewBox
+   (el trazo pesa un poco hacia abajo); se compensa con un nudge fino,
+   medido por centroide de píxeles, no a ojo. */
+.fab svg { width: 30px; height: 30px; transform: translateY(-1px); }
 
 /* ==========================================================================
    MOTION / REVEAL

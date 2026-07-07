@@ -366,7 +366,7 @@
 
     const START_VH = 1.0;  // progreso objetivo 0: el borde superior toca el fondo de pantalla
     const END_VH = 0.32;   // progreso objetivo 1: recién al llegar a un tercio de la pantalla
-    const SUAVIZADO = 0.055; // más chico = persecución más lenta y perezosa (más fluida)
+    const SUAVIZADO = 0.083; // 50% más rápido que antes (0.055); más chico = más lenta/perezosa
 
     const estado = reveals.map((el) => ({ el, offset: 0, current: -1, target: 0 }));
 
