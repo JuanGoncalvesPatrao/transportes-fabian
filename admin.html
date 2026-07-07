@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es-AR" class="no-js">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel de solicitudes · Transportes Fabián</title>
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Hanken+Grotesk:wght@400;500;600;700&family=Kaushan+Script&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="admin.css" />
+  <script>document.documentElement.classList.replace('no-js','js');</script>
+</head>
+<body class="admin">
+  <header class="admin-header">
+    <div class="wrap admin-header-inner">
+      <a class="brand" href="index.html" aria-label="Transportes Fabián, inicio">
+        <span class="brand-name">Transportes Fabián</span>
+      </a>
+      <span class="admin-badge">Panel de solicitudes</span>
+      <a class="btn btn-ghost-dark btn-sm" href="index.html">Ver la web</a>
+    </div>
+  </header>
+
+  <main class="wrap admin-main">
+    <div class="admin-title">
+      <h1>Solicitudes de presupuesto</h1>
+      <p>Cada pedido enviado desde el formulario aparece acá, ordenado del más nuevo al más viejo.</p>
+    </div>
+
+    <!-- Métricas -->
+    <section class="metrics" aria-label="Resumen">
+      <div class="metric"><strong data-metric-total>0</strong><span>Solicitudes totales</span></div>
+      <div class="metric"><strong data-metric-week>0</strong><span>Últimos 7 días</span></div>
+      <div class="metric"><strong data-metric-emails>0</strong><span>Con email (para marketing)</span></div>
+      <div class="metric"><strong data-metric-top>—</strong><span>Vehículo más pedido</span></div>
+    </section>
+
+    <!-- Barra de herramientas -->
+    <div class="toolbar">
+      <div class="toolbar-left">
+        <div class="search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <input type="search" id="search" placeholder="Buscar por nombre, teléfono, email o zona…" aria-label="Buscar solicitudes" />
+        </div>
+        <select id="filtro-vehiculo" aria-label="Filtrar por vehículo">
+          <option value="">Todos los vehículos</option>
+        </select>
+      </div>
+      <div class="toolbar-right">
+        <button class="btn btn-sm btn-ghost-dark" data-export-emails>Exportar emails</button>
+        <button class="btn btn-sm btn-accent" data-export-csv>Exportar todo (CSV)</button>
+      </div>
+    </div>
+
+    <!-- Tabla -->
+    <div class="table-wrap">
+      <table class="leads-table">
+        <thead>
+          <tr>
+            <th data-sort="ts" class="sortable" aria-sort="descending">Fecha y hora</th>
+            <th>Nombre</th>
+            <th>Teléfono</th>
+            <th>Email</th>
+            <th>Zona</th>
+            <th>Mudanza</th>
+            <th class="col-actions">Acciones</th>
+          </tr>
+        </thead>
+        <tbody data-tbody></tbody>
+      </table>
+
+      <div class="empty-state" data-empty hidden>
+        <p><strong>Todavía no hay solicitudes.</strong></p>
+        <p>Completá el formulario en la web y volvé acá, o cargá datos de ejemplo para ver cómo se ve.</p>
+        <button class="btn btn-accent btn-sm" data-seed>Cargar datos de ejemplo</button>
+      </div>
+    </div>
+
+    <div class="table-footer">
+      <p data-count>0 solicitudes</p>
+      <div class="table-footer-actions">
+        <button class="btn btn-sm btn-ghost-dark" data-seed-more>Cargar ejemplos</button>
+        <button class="btn btn-sm btn-danger" data-clear>Vaciar todo</button>
+      </div>
+    </div>
+
+    <p class="admin-note">
+      Demo: las solicitudes se guardan en este navegador (<code>localStorage</code>). En producción irían a una base de datos o a tu email.
+      El botón de WhatsApp de cada fila abre el chat con el teléfono del cliente y un mensaje ya escrito.
+    </p>
+  </main>
+
+  <!-- Plantilla de fila -->
+  <template data-row-template>
+    <tr>
+      <td class="cell-date"><span class="c-date"></span><span class="c-time"></span></td>
+      <td class="cell-name"></td>
+      <td class="cell-phone"></td>
+      <td class="cell-email"></td>
+      <td class="cell-zone"></td>
+      <td class="cell-vehicle"><span class="veh-tag"></span></td>
+      <td class="col-actions">
+        <a class="row-btn row-btn--wa" target="_blank" rel="noopener" title="Abrir WhatsApp">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-whatsapp"/></svg>
+          <span class="visually-hidden">Abrir WhatsApp</span>
+        </a>
+        <button class="row-btn row-btn--del" title="Borrar solicitud">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V5h6v2M6 7l1 13h10l1-13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="visually-hidden">Borrar</span>
+        </button>
+      </td>
+    </tr>
+  </template>
+
+  <!-- Sprite (solo el icono de WhatsApp que usa la tabla) -->
+  <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+    <defs>
+      <g id="icon-whatsapp" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 0 1 6.8 12.2 8 8 0 0 1-10.3 3l-.5-.3-2.8.8.8-2.7-.3-.5A8 8 0 0 1 12 4zm-3 4.2c-.2 0-.5 0-.7.4-.3.4-1 1-1 2.3s1 2.7 1.2 2.9c.1.2 2 3 4.8 4.1 2.4 1 2.9.8 3.4.8.5-.1 1.6-.7 1.9-1.4.2-.6.2-1.2.1-1.3-.1-.1-.3-.2-.6-.4l-2-1c-.3-.1-.5-.1-.7.1l-.9 1c-.1.2-.3.2-.6.1-.3-.2-1.2-.5-2.2-1.4-.8-.7-1.4-1.6-1.5-1.9-.2-.3 0-.4.1-.6l.5-.5c.1-.2.2-.3.3-.5 0-.2 0-.4 0-.5l-.9-2c-.2-.6-.5-.5-.7-.5z"/></g>
+    </defs>
+  </svg>
+
+  <script src="admin.js"></script>
+</body>
+</html>
