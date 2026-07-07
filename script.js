@@ -346,16 +346,28 @@
   /* ======================================================================
      REVEAL ON SCROLL
      ====================================================================== */
+  // "Armamos" (ocultamos) cada sección de forma síncrona, ANTES de que el
+  // usuario llegue a verla, y recién ahí observamos. Lo que ya está a la
+  // vista al cargar la página (o si el navegador no soporta IO) queda
+  // visible directamente, para no generar ningún parpadeo.
   const reveals = $$('.reveal');
   if ('IntersectionObserver' in window && !prefersReduced()) {
     const io = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) { entry.target.classList.add('is-in'); io.unobserve(entry.target); }
+        if (entry.isIntersecting) {
+          entry.target.classList.remove('reveal-armed');
+          io.unobserve(entry.target);
+        }
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-    reveals.forEach((el) => io.observe(el));
-  } else {
-    reveals.forEach((el) => el.classList.add('is-in'));
+    }, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' });
+
+    reveals.forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      const yaVisible = rect.top < window.innerHeight && rect.bottom > 0;
+      if (yaVisible) return; // ya está a la vista: sin animación, sin riesgo de flash
+      el.classList.add('reveal-armed');
+      io.observe(el);
+    });
   }
 
   /* ---------------------------------------------------------------------- */

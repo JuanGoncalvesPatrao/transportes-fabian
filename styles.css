@@ -448,21 +448,31 @@ p { text-wrap: pretty; }
 /* ==========================================================================
    MOTION / REVEAL
    ========================================================================== */
-/* Los reveals NUNCA ocultan contenido por defecto: si el observer no
-   dispara (ancla directa, lector, render raro) la sección se ve igual.
-   La animación solo se agrega al entrar al viewport. */
-.reveal.is-in { animation: reveal-in .9s var(--ease-out) both; }
-@keyframes reveal-in {
-  from { opacity: 0; transform: translateY(30px); filter: blur(8px); }
-  to   { opacity: 1; transform: none; filter: none; }
+/* Patrón "armar y soltar", con TRANSITION (no animation):
+   - Por defecto .reveal está totalmente visible (si JS no corre, no pasa nada raro).
+   - script.js agrega .reveal-armed de forma síncrona antes del primer pintado,
+     solo a lo que está fuera de pantalla (el hero no lleva esta clase).
+   - Al entrar al viewport, se saca .reveal-armed: como es una transición
+     (no una animación con keyframes), interpola suave desde donde esté el
+     elemento en ese instante, sin el salto "visible -> invisible -> visible"
+     que da sensación de bug.
+*/
+.reveal {
+  transition: opacity .7s var(--ease-out), transform .7s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0s);
 }
+.reveal.reveal-armed { opacity: 0; transform: translateY(22px); }
+
 /* Cascada suave dentro de grupos */
-.benefit-grid .reveal.is-in:nth-child(2),
-.testimonials .reveal.is-in:nth-child(2) { animation-delay: .09s; }
-.benefit-grid .reveal.is-in:nth-child(3),
-.testimonials .reveal.is-in:nth-child(3) { animation-delay: .18s; }
-.benefit-grid .reveal.is-in:nth-child(4) { animation-delay: .27s; }
+.benefit-grid .reveal:nth-child(2), .testimonials .reveal:nth-child(2) { --reveal-delay: .08s; }
+.benefit-grid .reveal:nth-child(3), .testimonials .reveal:nth-child(3) { --reveal-delay: .16s; }
+.benefit-grid .reveal:nth-child(4) { --reveal-delay: .24s; }
+
 @keyframes slide-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+/* Entrada propia del hero al cargar la página (no depende de scroll/observer) */
+.js .hero-content { animation: hero-in 1s .1s var(--ease-out) both; }
+@keyframes hero-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
 
 .js .hero-truck { animation: truck-in 1s var(--ease-out) both; }
 @keyframes truck-in { from { opacity: 0; transform: translate(320px, 210px) scale(2.15); } to { opacity: 1; transform: translate(360px, 210px) scale(2.15); } }
@@ -473,7 +483,6 @@ p { text-wrap: pretty; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important;
     transition-duration: .001ms !important; }
-  .reveal.is-in { animation: none; }
 }
 
 /* ==========================================================================
