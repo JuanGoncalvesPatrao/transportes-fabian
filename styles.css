@@ -541,7 +541,7 @@ p { text-wrap: pretty; }
   /* Espaciador final generoso: da el recorrido extra que necesita la
      última card (5 ambientes) para llegar al centro; el snap obligatorio
      evita que el scroll descanse en el vacío */
-  .vehicle-grid::after { content: ""; flex: 0 0 45%; }
+  .vehicle-grid::after { content: ""; flex: 0 0 90%; }
   .vehicle label { padding: 1rem; }
   .vehicle label:hover { transform: none; }   /* sin lift en táctil */
 
