@@ -130,16 +130,16 @@
           <a class="btn btn-accent coverage-cta" href="#presupuesto">Ver mi presupuesto</a>
         </div>
         <div class="coverage-map reveal" aria-hidden="true">
-          <svg viewBox="0 0 320 320" class="map-svg" role="img" aria-label="Mapa estilizado de CABA y Gran Buenos Aires">
-            <circle class="map-ring map-ring--3" cx="160" cy="160" r="150"/>
-            <circle class="map-ring map-ring--2" cx="160" cy="160" r="105"/>
-            <circle class="map-ring map-ring--1" cx="160" cy="160" r="60"/>
-            <g class="map-dot"><circle cx="160" cy="160" r="10"/></g>
-            <text x="160" y="140" class="map-label map-label--center">CABA</text>
-            <text x="160" y="52"  class="map-label">Norte</text>
-            <text x="270" y="200" class="map-label">Este</text>
-            <text x="160" y="292" class="map-label">Sur</text>
-            <text x="46"  y="200" class="map-label">Oeste</text>
+          <svg viewBox="0 0 340 340" class="map-svg" role="img" aria-label="Mapa lineal minimalista de CABA y el Gran Buenos Aires">
+            <!-- GBA: contorno grande, punteado -->
+            <path class="map-gba" d="M296,255 C270,310 170,332 95,305 C28,280 10,205 22,135 C34,70 95,20 175,20 C235,20 275,42 300,80 C318,110 322,175 310,215 C305,232 300,244 296,255 Z"/>
+            <!-- Río de la Plata: la costa se extiende más allá del contorno de GBA -->
+            <path class="map-river" d="M65,22 C160,-4 270,10 315,75 C332,102 336,150 328,200"/>
+            <!-- CABA: cuña real (recta contra el río, punta al sur en el Riachuelo) -->
+            <path class="map-caba" d="M118,58 L215,65 C245,68 268,88 278,115 C286,138 280,158 262,178 L172,238 C160,246 145,242 138,228 L100,168 C86,145 84,118 96,95 C102,80 109,68 118,58 Z"/>
+            <circle class="map-pin" cx="168" cy="145" r="6.5"/>
+            <text x="168" y="137" text-anchor="middle" class="map-label map-label--center">CABA</text>
+            <text x="55" y="290" class="map-label">GBA</text>
           </svg>
         </div>
       </div>

@@ -375,13 +375,16 @@ p { text-wrap: pretty; }
 .coverage-cta { margin-top: 2rem; }
 
 .map-svg { width: 100%; max-width: 380px; margin-inline: auto; }
-.map-ring { fill: none; stroke: var(--brand); }
-.map-ring--1 { fill: oklch(0.53 0.16 256 / .10); stroke-width: 2; }
-.map-ring--2 { stroke: oklch(0.53 0.16 256 / .5); stroke-width: 1.5; stroke-dasharray: 3 6; }
-.map-ring--3 { stroke: oklch(0.53 0.16 256 / .3); stroke-width: 1.5; stroke-dasharray: 3 6; }
-.map-dot circle { fill: var(--accent); stroke: #fff; stroke-width: 3; }
-.map-label { font-family: var(--font-display); font-weight: 700; font-size: 13px; fill: var(--ink-soft); text-anchor: middle; }
-.map-label--center { fill: var(--ink); font-size: 15px; }
+/* GBA: contorno grande, punteado, apenas teñido */
+.map-gba { fill: oklch(0.53 0.16 256 / .05); stroke: var(--brand-600); stroke-width: 2; stroke-dasharray: 4 6; }
+/* Río de la Plata: se extiende más allá del contorno de GBA, como si
+   siguiera fuera del cuadro (no una línea que corta de golpe) */
+.map-river { fill: none; stroke: oklch(0.72 0.09 230); stroke-width: 9; stroke-linecap: round; }
+/* CABA: la cuña real de la ciudad (recta contra el río, punta al sur) */
+.map-caba { fill: oklch(0.53 0.16 256 / .16); stroke: var(--brand-700); stroke-width: 2.6; stroke-linejoin: round; }
+.map-pin { fill: var(--accent); stroke: #fff; stroke-width: 2.5; }
+.map-label { font-family: var(--font-display); font-weight: 700; font-size: 15px; fill: var(--ink-soft); text-anchor: middle; }
+.map-label--center { fill: var(--ink); font-size: 17px; }
 
 /* ==========================================================================
    NOSOTROS / TESTIMONIOS
