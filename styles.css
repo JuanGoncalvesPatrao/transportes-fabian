@@ -333,6 +333,8 @@ p { text-wrap: pretty; }
   font-size: var(--step--1); transition: background-color .2s, color .2s; }
 .map-placeholder:hover { background: var(--surface); color: var(--brand-600); }
 .map-placeholder svg { width: 30px; height: 30px; }
+/* El display de las reglas de arriba le ganaría al atributo hidden: forzamos */
+.map-embed iframe[hidden], .map-placeholder[hidden] { display: none; }
 .zona-hint { font-size: .78rem; color: var(--ink-soft); margin-top: .4rem; }
 @media (max-width: 480px) {
   .zona-input { flex-direction: column; }
@@ -529,6 +531,9 @@ p { text-wrap: pretty; }
   }
   .vehicle-grid::-webkit-scrollbar { display: none; }
   .vehicle { flex: 0 0 76%; max-width: 250px; scroll-snap-align: start; }
+  /* Espaciador final: sin esto la última card (5 ambientes) no puede
+     acomodarse al frente y queda cortada contra el borde derecho */
+  .vehicle-grid::after { content: ""; flex: 0 0 24%; }
   .vehicle label { padding: 1rem; }
   .vehicle label:hover { transform: none; }   /* sin lift en táctil */
 
