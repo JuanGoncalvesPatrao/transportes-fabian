@@ -149,9 +149,15 @@
     if (!v) return;
     seleccion = v;
     fillSummary(v);
-    // En el carrusel mobile, centra la card elegida sin mover el scroll vertical
+    // En el carrusel mobile, centra la card elegida scrolleando SOLO el
+    // carrusel (scrollIntoView desplazaba también el body: corría la página)
     const card = e.target.closest('.vehicle');
-    if (card) card.scrollIntoView({ behavior: prefersReduced() ? 'auto' : 'smooth', block: 'nearest', inline: 'center' });
+    const cont = card && card.closest('.vehicle-grid');
+    if (cont && cont.scrollWidth > cont.clientWidth) {
+      const delta = (card.getBoundingClientRect().left + card.offsetWidth / 2)
+                  - (cont.getBoundingClientRect().left + cont.clientWidth / 2);
+      cont.scrollBy({ left: delta, behavior: prefersReduced() ? 'auto' : 'smooth' });
+    }
     if (panel.hidden) {
       panel.hidden = false;
       // llevar el foco al primer campo, sin saltar bruscamente

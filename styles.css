@@ -74,7 +74,10 @@ body {
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* clip (a diferencia de hidden) impide también el desplazamiento
+     lateral programático: nada puede correr la página de costado */
   overflow-x: hidden;
+  overflow-x: clip;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -531,7 +534,7 @@ p { text-wrap: pretty; }
     overscroll-behavior-x: contain;
   }
   .vehicle-grid::-webkit-scrollbar { display: none; }
-  .vehicle { flex: 0 0 76%; max-width: 250px; scroll-snap-align: start; }
+  .vehicle { flex: 0 0 76%; max-width: 250px; scroll-snap-align: center; }
   /* Espaciador final: sin esto la última card (5 ambientes) no puede
      acomodarse al frente y queda cortada contra el borde derecho */
   .vehicle-grid::after { content: ""; flex: 0 0 24%; }
