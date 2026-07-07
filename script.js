@@ -325,11 +325,7 @@
       fab.href = waUrl;
       fab.target = '_blank';
       fab.rel = 'noopener';
-      fab.classList.remove('fab--quote');
       fab.setAttribute('aria-label', 'Escribir por WhatsApp');
-      $('.fab-ico-quote', fab).hidden = true;
-      $('.fab-ico-wa', fab).hidden = false;
-      $('span', fab).textContent = 'WhatsApp';
     }
 
     const waFooter = $('[data-whatsapp-footer]');

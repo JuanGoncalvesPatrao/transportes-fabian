@@ -207,7 +207,7 @@ p { text-wrap: pretty; }
   line-height: 1; color: #fff; text-shadow: 0 4px 20px rgba(0,0,0,.35); margin-bottom: .4rem; }
 .stars { display: flex; gap: .2rem; margin-bottom: 1rem; }
 .stars svg { width: 20px; height: 20px; fill: var(--accent); filter: drop-shadow(0 1px 2px rgba(0,0,0,.3)); }
-.hero h1 { font-size: var(--step-4); font-weight: 800; letter-spacing: -0.035em; margin-bottom: .8rem; }
+.hero h1 { font-size: var(--step-4); font-weight: 800; letter-spacing: -0.035em; margin-bottom: .8rem; color: #fff; }
 .hero h1 .hl { color: var(--accent); }
 .hero-sub { font-size: var(--step-1); max-width: 34ch; color: oklch(0.97 0.01 250 / .92); margin-bottom: 1.6rem; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-bottom: 1rem; }
@@ -430,33 +430,31 @@ p { text-wrap: pretty; }
    ========================================================================== */
 .fab {
   position: fixed; right: clamp(1rem, 3vw, 2rem); bottom: clamp(1rem, 3vw, 2rem); z-index: var(--z-fab);
-  display: inline-flex; align-items: center; gap: .55rem;
-  background: var(--whatsapp); color: #fff; font-family: var(--font-display); font-weight: 700;
-  padding: .85rem 1.3rem; border-radius: var(--r-pill); box-shadow: var(--sh-3);
+  display: grid; place-items: center; width: 60px; height: 60px;
+  background: var(--whatsapp); color: #fff; border-radius: 50%; box-shadow: var(--sh-3);
   transform: translateY(120%); opacity: 0; transition: transform .35s var(--ease-out), opacity .35s, background-color .2s;
 }
 .fab[data-visible] { transform: translateY(0); opacity: 1; }
 .fab:hover { background: var(--whatsapp-600); }
-.fab svg { width: 22px; height: 22px; }
-/* Variante presupuesto (sin WhatsApp configurado): ámbar, ícono de camión */
-.fab--quote { background: var(--accent); color: var(--accent-ink); }
-.fab--quote:hover { background: var(--accent-600); }
+.fab svg { width: 30px; height: 30px; }
 
 /* ==========================================================================
    MOTION / REVEAL
    ========================================================================== */
-.js .reveal {
-  opacity: 0; transform: translateY(30px); filter: blur(8px);
-  transition: opacity .9s var(--ease-out), transform .9s var(--ease-out), filter .9s var(--ease-out);
-  will-change: opacity, transform, filter;
+/* Los reveals NUNCA ocultan contenido por defecto: si el observer no
+   dispara (ancla directa, lector, render raro) la sección se ve igual.
+   La animación solo se agrega al entrar al viewport. */
+.reveal.is-in { animation: reveal-in .9s var(--ease-out) both; }
+@keyframes reveal-in {
+  from { opacity: 0; transform: translateY(30px); filter: blur(8px); }
+  to   { opacity: 1; transform: none; filter: none; }
 }
-.js .reveal.is-in { opacity: 1; transform: none; filter: none; }
 /* Cascada suave dentro de grupos */
-.js .benefit-grid .reveal:nth-child(2),
-.js .testimonials .reveal:nth-child(2) { transition-delay: .09s; }
-.js .benefit-grid .reveal:nth-child(3),
-.js .testimonials .reveal:nth-child(3) { transition-delay: .18s; }
-.js .benefit-grid .reveal:nth-child(4) { transition-delay: .27s; }
+.benefit-grid .reveal.is-in:nth-child(2),
+.testimonials .reveal.is-in:nth-child(2) { animation-delay: .09s; }
+.benefit-grid .reveal.is-in:nth-child(3),
+.testimonials .reveal.is-in:nth-child(3) { animation-delay: .18s; }
+.benefit-grid .reveal.is-in:nth-child(4) { animation-delay: .27s; }
 @keyframes slide-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 
 .js .hero-truck { animation: truck-in 1s var(--ease-out) both; }
@@ -468,7 +466,7 @@ p { text-wrap: pretty; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important;
     transition-duration: .001ms !important; }
-  .js .reveal { opacity: 1; transform: none; filter: none; }
+  .reveal.is-in { animation: none; }
 }
 
 /* ==========================================================================
@@ -504,8 +502,7 @@ p { text-wrap: pretty; }
   .coverage-groups { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; }
   .cta-inner { flex-direction: column; align-items: flex-start; }
-  .fab span { display: none; }
-  .fab { padding: 1rem; }
+  .fab { width: 54px; height: 54px; }
   .hero-actions { flex-direction: column; align-items: stretch; }
   .hero-actions .btn { width: 100%; }
 }
@@ -516,6 +513,10 @@ p { text-wrap: pretty; }
 @media (max-width: 640px) {
   .section-head { margin-bottom: 1.6rem; }
   .section-lead { font-size: var(--step-0); }
+
+  /* La escena del hero (1200x520) recortada en retrato muestra un camión
+     gigante deformado: en pantallas chicas queda el gradiente limpio */
+  .hero-scene { display: none; }
 
   /* Vehículos como carrusel deslizable con snap */
   .vehicle-set { padding: 1.1rem .9rem 1.2rem; }

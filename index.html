@@ -354,12 +354,10 @@
     </div>
   </footer>
 
-  <!-- Botón flotante: presupuesto por defecto; script.js lo convierte a
-       WhatsApp (verde + ícono) solo cuando hay número configurado -->
-  <a class="fab fab--quote" href="#presupuesto" data-fab aria-label="Pedir presupuesto">
-    <svg class="fab-ico-quote" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-truck-line"/></svg>
-    <svg class="fab-ico-wa" viewBox="0 0 24 24" aria-hidden="true" hidden><use href="#icon-whatsapp"/></svg>
-    <span>Pedir presupuesto</span>
+  <!-- Botón flotante: solo el logo de WhatsApp. Sin número configurado
+       lleva al presupuesto; script.js lo apunta a wa.me cuando lo haya -->
+  <a class="fab" href="#presupuesto" data-fab aria-label="Pedir presupuesto por WhatsApp">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-whatsapp"/></svg>
   </a>
 
   <!-- ===== SPRITE SVG (iconos + camiones) ===== -->
