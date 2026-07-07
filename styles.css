@@ -436,22 +436,6 @@ p { text-wrap: pretty; }
   padding-top: 1.5rem; font-size: .8rem; color: oklch(0.78 0.01 250 / .7); }
 
 /* ==========================================================================
-   FAB
-   ========================================================================== */
-.fab {
-  position: fixed; right: clamp(1rem, 3vw, 2rem); bottom: clamp(1rem, 3vw, 2rem); z-index: var(--z-fab);
-  display: grid; place-items: center; width: 60px; height: 60px;
-  /* El logo (imagen real, fondo transparente) YA es un anillo verde: si el
-     botón también fuera verde sólido, el anillo se camuflaría y desaparecería.
-     Fondo blanco simple para que el logo se lea nítido en cualquier sección. */
-  background: #fff; border-radius: 50%; box-shadow: var(--sh-3);
-  transform: translateY(120%); opacity: 0; transition: transform .35s var(--ease-out), opacity .35s, background-color .2s;
-}
-.fab[data-visible] { transform: translateY(0); opacity: 1; }
-.fab:hover { box-shadow: var(--sh-3), 0 0 0 3px oklch(0.68 0.17 150 / .25); }
-.fab img { width: 40px; height: 40px; display: block; }
-
-/* ==========================================================================
    MOTION / REVEAL
    ========================================================================== */
 /* Reveal ligado al scroll (scrubbed), no por umbral on/off:
@@ -519,7 +503,6 @@ p { text-wrap: pretty; }
   .coverage-groups { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; }
   .cta-inner { flex-direction: column; align-items: flex-start; }
-  .fab { width: 54px; height: 54px; }
   .hero-actions { flex-direction: column; align-items: stretch; }
   .hero-actions .btn { width: 100%; }
 }

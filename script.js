@@ -82,24 +82,11 @@
      HEADER: fondo sólido al scrollear
      ====================================================================== */
   const header = $('[data-header]');
-  // El FAB lleva al presupuesto: se esconde mientras el form está en pantalla
-  // para no tapar el botón de envío ni el mapa (crítico en mobile).
-  let formEnVista = false;
   const onScroll = () => {
     header.toggleAttribute('data-scrolled', window.scrollY > 40);
-    const fab = $('[data-fab]');
-    if (fab) fab.toggleAttribute('data-visible', window.scrollY > 500 && !formEnVista);
   };
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
-
-  const seccionForm = $('#servicios');
-  if (seccionForm && 'IntersectionObserver' in window) {
-    new IntersectionObserver((entries) => {
-      formEnVista = entries[0].isIntersecting;
-      onScroll();
-    }, { rootMargin: '-15% 0px -15% 0px' }).observe(seccionForm);
-  }
 
   /* ======================================================================
      NAV MÓVIL
@@ -321,18 +308,10 @@
   });
 
   /* ----- Modo WhatsApp (solo si hay número configurado) -----
-     Sin número: FAB ámbar "Pedir presupuesto" y footer "Presupuesto online".
-     Con número: ambos pasan a WhatsApp real, con ícono y color correctos. */
+     Sin número: footer "Presupuesto online". Con número: pasa a WhatsApp
+     real, con ícono y color correctos. */
   if (CONFIG.whatsapp) {
     const waUrl = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent('Hola Fabián, quiero consultar por una mudanza.')}`;
-
-    const fab = $('[data-fab]');
-    if (fab) {
-      fab.href = waUrl;
-      fab.target = '_blank';
-      fab.rel = 'noopener';
-      fab.setAttribute('aria-label', 'Escribir por WhatsApp');
-    }
 
     const waFooter = $('[data-whatsapp-footer]');
     if (waFooter) {
