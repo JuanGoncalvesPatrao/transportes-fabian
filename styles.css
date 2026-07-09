@@ -210,12 +210,14 @@ p { text-wrap: pretty; }
 .hero-box--3 { transform: translate(1020px, 380px) scale(1.15); }
 
 .hero-content { position: relative; max-width: 640px; }
-/* El logo es azul sobre transparente: sobre el degradé azul del hero se
-   camufla, así que lleva una placa circular blanca de respaldo. */
-.hero-logo { display: inline-flex; align-items: center; justify-content: center;
-  width: clamp(84px, 8vw + 60px, 128px); height: clamp(84px, 8vw + 60px, 128px);
-  background: #fff; border-radius: 50%; box-shadow: var(--sh-3); margin-bottom: 1.1rem; }
-.hero-logo img { width: 78%; height: 78%; object-fit: contain; display: block; }
+/* Logo blanco (variante sin placa): sobre el degradé azul del hero ya
+   contrasta solo, sin necesidad del respaldo circular que usan header/footer. */
+.hero-logo { display: block;
+  width: clamp(72px, 6vw + 50px, 104px); margin-bottom: .9rem;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,.25)); }
+.hero-logo img { width: 100%; height: auto; object-fit: contain; display: block; }
+.hero-brand-name { display: block; font-family: var(--font-script); color: #fff;
+  font-size: clamp(1.6rem, 1vw + 1.4rem, 2rem); line-height: 1; margin-bottom: 1.1rem; }
 .stars { display: flex; gap: .2rem; margin-bottom: 1rem; }
 .stars svg { width: 20px; height: 20px; fill: var(--accent); filter: drop-shadow(0 1px 2px rgba(0,0,0,.3)); }
 .hero h1 { font-size: var(--step-4); font-weight: 800; letter-spacing: -0.035em; margin-bottom: .8rem; color: #fff; }
