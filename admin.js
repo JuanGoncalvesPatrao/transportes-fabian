@@ -72,7 +72,7 @@
     if (bienvenida) {
       loginView.hidden = true;
       welcomeView.hidden = false;
-      await esperar(1400);
+      await esperar(1900);
       welcomeView.classList.add('is-leaving');
       await esperar(350);
       welcomeView.hidden = true;

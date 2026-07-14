@@ -45,18 +45,59 @@
 }
 
 /* ---------- Bienvenida (transición post-login) ---------- */
-.admin-welcome:not([hidden]) { display: flex; justify-content: center; align-items: center;
-  min-height: 60vh; }
-.admin-welcome-inner { text-align: center; opacity: 0; transform: translateY(10px) scale(.97);
-  animation: welcome-in .5s var(--ease-out, ease-out) forwards; }
-.admin-welcome-check { display: inline-flex; align-items: center; justify-content: center;
-  width: 64px; height: 64px; border-radius: 50%; background: oklch(0.9 0.1 150 / .2);
-  color: oklch(0.55 0.16 150); margin-bottom: 1.2rem; }
-.admin-welcome-check svg { width: 32px; height: 32px; }
-.admin-welcome-inner h1 { font-size: var(--step-3); font-weight: 800; }
+.admin-welcome:not([hidden]) { position: relative; overflow: hidden; display: flex;
+  justify-content: center; align-items: center; min-height: 60vh; border-radius: var(--r-lg);
+  background: linear-gradient(150deg, var(--brand) 0%, var(--brand-700) 65%, var(--navy-900) 100%);
+  background-size: 200% 200%; animation: welcome-bg 3s ease-in-out infinite alternate; }
+.admin-welcome-inner { position: relative; z-index: 2; text-align: center; opacity: 0;
+  transform: translateY(10px) scale(.97); animation: welcome-in .5s var(--ease-out, ease-out) forwards; }
+.admin-welcome-check { position: relative; display: inline-flex; align-items: center; justify-content: center;
+  width: 76px; height: 76px; border-radius: 50%; background: #fff;
+  color: oklch(0.6 0.17 150); margin-bottom: 1.4rem; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+.admin-welcome-check svg { width: 36px; height: 36px; }
+.admin-welcome-ring { position: absolute; inset: 0; border-radius: 50%; border: 2.5px solid var(--accent);
+  animation: welcome-ring 1.8s ease-out infinite; }
+.admin-welcome-ring--2 { border-color: #fff; animation-delay: .5s; }
+.admin-welcome-inner h1 { font-size: var(--step-3); font-weight: 800; color: #fff;
+  text-shadow: 0 2px 12px rgba(0,0,0,.2); }
 
 @keyframes welcome-in {
   to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes welcome-bg {
+  to { background-position: 100% 100%; }
+}
+@keyframes welcome-ring {
+  0%   { transform: scale(1);   opacity: .9; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+
+/* Confetti: puntos de color que caen/rotan con retraso escalonado */
+.confetti { position: absolute; top: -12%; width: 10px; height: 10px; border-radius: 2px;
+  background: var(--accent); opacity: 0; animation: confetti-fall 2.2s ease-in forwards; z-index: 1; }
+.confetti--1  { left: 6%;  background: var(--accent);   animation-delay: .05s; }
+.confetti--2  { left: 16%; background: #fff;             animation-delay: .25s; border-radius: 50%; }
+.confetti--3  { left: 26%; background: var(--whatsapp);  animation-delay: .1s; }
+.confetti--4  { left: 37%; background: var(--accent);    animation-delay: .4s; border-radius: 50%; }
+.confetti--5  { left: 48%; background: #fff;             animation-delay: .15s; }
+.confetti--6  { left: 58%; background: var(--whatsapp);  animation-delay: .35s; border-radius: 50%; }
+.confetti--7  { left: 68%; background: var(--accent);    animation-delay: 0s; }
+.confetti--8  { left: 77%; background: #fff;             animation-delay: .3s; border-radius: 50%; }
+.confetti--9  { left: 86%; background: var(--whatsapp);  animation-delay: .2s; }
+.confetti--10 { left: 94%; background: var(--accent);    animation-delay: .45s; border-radius: 50%; }
+.confetti--11 { left: 40%; background: #fff;             animation-delay: .55s; }
+.confetti--12 { left: 82%; background: var(--whatsapp);  animation-delay: .6s; border-radius: 50%; }
+
+@keyframes confetti-fall {
+  0%   { opacity: 0; transform: translateY(0) rotate(0deg); }
+  10%  { opacity: 1; }
+  100% { opacity: 0; transform: translateY(340px) rotate(340deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-welcome:not([hidden]) { animation: none; }
+  .admin-welcome-ring { animation: none; opacity: 0; }
+  .confetti { animation: none; opacity: 0; }
 }
 
 [data-admin-view], [data-welcome-view] { transition: opacity .35s ease; }
