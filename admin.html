@@ -27,9 +27,28 @@
   </header>
 
   <main class="wrap admin-main">
+    <div class="admin-login" data-login-view hidden>
+      <form class="admin-login-form" data-login-form>
+        <h1>Ingresar al panel</h1>
+        <p>Este panel tiene datos de clientes. Ingresá con tu usuario y contraseña.</p>
+        <div class="field">
+          <label for="login-usuario">Usuario</label>
+          <input type="text" id="login-usuario" name="usuario" autocomplete="username" required />
+        </div>
+        <div class="field">
+          <label for="login-password">Contraseña</label>
+          <input type="password" id="login-password" name="password" autocomplete="current-password" required />
+        </div>
+        <p class="field-error" data-login-error hidden>Usuario o contraseña incorrectos.</p>
+        <button type="submit" class="btn btn-accent btn-block">Ingresar</button>
+      </form>
+    </div>
+
+    <div data-admin-view hidden>
     <div class="admin-title">
       <h1>Solicitudes de presupuesto</h1>
       <p>Cada pedido enviado desde el formulario aparece acá, ordenado del más nuevo al más viejo.</p>
+      <button type="button" class="btn btn-sm btn-ghost-dark" data-logout>Cerrar sesión</button>
     </div>
 
     <!-- Métricas -->
@@ -77,23 +96,18 @@
 
       <div class="empty-state" data-empty hidden>
         <p><strong>Todavía no hay solicitudes.</strong></p>
-        <p>Completá el formulario en la web y volvé acá, o cargá datos de ejemplo para ver cómo se ve.</p>
-        <button class="btn btn-accent btn-sm" data-seed>Cargar datos de ejemplo</button>
+        <p>Van a aparecer acá apenas alguien complete el formulario en la web.</p>
       </div>
     </div>
 
     <div class="table-footer">
       <p data-count>0 solicitudes</p>
-      <div class="table-footer-actions">
-        <button class="btn btn-sm btn-ghost-dark" data-seed-more>Cargar ejemplos</button>
-        <button class="btn btn-sm btn-danger" data-clear>Vaciar todo</button>
-      </div>
     </div>
 
     <p class="admin-note">
-      Demo: las solicitudes se guardan en este navegador (<code>localStorage</code>). En producción irían a una base de datos o a tu email.
-      El botón de WhatsApp de cada fila abre el chat con el teléfono del cliente y un mensaje ya escrito.
+      Las solicitudes se guardan en la base de datos del sitio. El botón de WhatsApp de cada fila abre el chat con el teléfono del cliente y un mensaje ya escrito.
     </p>
+    </div>
   </main>
 
   <!-- Plantilla de fila -->

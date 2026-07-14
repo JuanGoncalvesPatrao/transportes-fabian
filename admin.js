@@ -1,17 +1,20 @@
 /* ==========================================================================
    Panel de solicitudes — Mudanzas Centenera
-   Lee las solicitudes guardadas por el formulario (localStorage) y las
-   muestra en una tabla con WhatsApp por fila y exportación a CSV.
+   Pide las solicitudes al backend (/api/leads) y las muestra en una tabla
+   con WhatsApp por fila y exportación a CSV. Requiere haber iniciado sesión.
    ========================================================================== */
 (() => {
   'use strict';
 
-  const STORAGE_KEY = 'mc_solicitudes';           // misma clave que script.js
-  const SEED_FLAG = 'mc_seeded';                   // para no re-sembrar ejemplos
   const WA_CONFIG_MSG = 'Hola! Te escribo por tu pedido de presupuesto de mudanza en Mudanzas Centenera.';
 
   const $  = (s, c = document) => c.querySelector(s);
   const $$ = (s, c = document) => [...c.querySelectorAll(s)];
+
+  const loginView = $('[data-login-view]');
+  const adminView = $('[data-admin-view]');
+  const loginForm = $('[data-login-form]');
+  const loginError = $('[data-login-error]');
 
   const tbody = $('[data-tbody]');
   const template = $('[data-row-template]');
@@ -20,41 +23,7 @@
   const search = $('#search');
 
   let orden = { campo: 'ts', dir: 'desc' };
-
-  /* ---------- Storage ---------- */
-  const leer = () => {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
-    catch { return []; }
-  };
-  const guardar = (lista) => localStorage.setItem(STORAGE_KEY, JSON.stringify(lista));
-
-  /* ---------- Datos de ejemplo ---------- */
-  function ejemplos() {
-    const ahora = Date.now();
-    const h = 3600e3, d = 24 * h;
-    const base = [
-      { nombre: 'Marina López',      telefono: '11 5623 8890', email: 'marina.lopez@gmail.com', zona: 'Caballito, CABA',      vehiculo: 'Pickup 250', vehiculoId: 'pickup-250', ambientes: '2 ambientes', cuando: 'Este mes',      off: 2 * h },
-      { nombre: 'Diego Fernández',   telefono: '11 3344 1276', email: '',                       zona: 'Flores, CABA',        vehiculo: 'Camión',     vehiculoId: 'camion',     ambientes: '4 ambientes', cuando: 'Esta semana',   off: 6 * h },
-      { nombre: 'Sofía Gutiérrez',   telefono: '11 6698 4521', email: 'sofiag@hotmail.com',      zona: 'Villa Urquiza, CABA', vehiculo: 'Pickup 100', vehiculoId: 'pickup-100', ambientes: '1 ambiente',  cuando: 'Más adelante',  off: 1 * d + 3 * h },
-      { nombre: 'Rodrigo Paz',       telefono: '11 2211 7788', email: 'rodri.paz@gmail.com',     zona: 'San Isidro, GBA Norte', vehiculo: 'Camión XL', vehiculoId: 'camion-xl', ambientes: '5 ambientes', cuando: 'Este mes',      off: 2 * d },
-      { nombre: 'Carla Domínguez',   telefono: '11 4455 9012', email: 'carladom@yahoo.com.ar',   zona: 'Lanús, GBA Sur',      vehiculo: 'Pickup 350', vehiculoId: 'pickup-350', ambientes: '3 ambientes', cuando: 'Esta semana',   off: 3 * d + 5 * h },
-      { nombre: 'Javier Ríos',       telefono: '11 7890 3344', email: '',                       zona: 'Morón, GBA Oeste',    vehiculo: 'Pickup 250', vehiculoId: 'pickup-250', ambientes: '2 ambientes', cuando: '',              off: 5 * d + 8 * h }
-    ];
-    return base.map((x, i) => ({
-      id: 'seed-' + i,
-      ts: new Date(ahora - x.off).toISOString(),
-      nombre: x.nombre, telefono: x.telefono, email: x.email, zona: x.zona,
-      vehiculo: x.vehiculo, vehiculoId: x.vehiculoId, ambientes: x.ambientes, cuando: x.cuando
-    }));
-  }
-
-  function sembrarEjemplos(forzar) {
-    const lista = leer();
-    const nuevos = ejemplos().filter((e) => !lista.some((l) => l.id === e.id));
-    if (!nuevos.length && !forzar) return;
-    guardar([...lista, ...nuevos]);
-    localStorage.setItem(SEED_FLAG, '1');
-  }
+  let solicitudes = [];
 
   /* ---------- Utilidades ---------- */
   const fmtFecha = (iso) => new Date(iso).toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' });
@@ -74,6 +43,67 @@
     return String(str).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   }
 
+  /* ---------- Sesión ---------- */
+  async function cargarSolicitudes() {
+    const resp = await fetch('/api/leads', { credentials: 'same-origin' });
+    if (resp.status === 401) {
+      mostrarLogin();
+      return;
+    }
+    if (!resp.ok) {
+      alert('No se pudieron cargar las solicitudes. Probá recargar la página.');
+      return;
+    }
+    solicitudes = await resp.json();
+    mostrarAdmin();
+    render();
+  }
+
+  function mostrarLogin() {
+    loginView.hidden = false;
+    adminView.hidden = true;
+  }
+
+  function mostrarAdmin() {
+    loginView.hidden = true;
+    adminView.hidden = false;
+  }
+
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    loginError.hidden = true;
+    const usuario = $('#login-usuario').value.trim();
+    const password = $('#login-password').value;
+    const boton = loginForm.querySelector('[type="submit"]');
+    boton.disabled = true;
+    try {
+      const resp = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ usuario, password })
+      });
+      if (!resp.ok) {
+        loginError.hidden = false;
+        return;
+      }
+      loginForm.reset();
+      await cargarSolicitudes();
+    } catch {
+      loginError.hidden = false;
+    } finally {
+      boton.disabled = false;
+    }
+  });
+
+  const logoutBtn = $('[data-logout]');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', async () => {
+      await fetch('/api/logout', { method: 'POST' });
+      solicitudes = [];
+      mostrarLogin();
+    });
+  }
+
   /* ---------- Render ---------- */
   function filtrar(lista) {
     const q = search.value.trim().toLowerCase();
@@ -91,28 +121,22 @@
   }
 
   function render() {
-    const todas = leer();
-    poblarFiltro(todas);
-    actualizarMetricas(todas);
+    poblarFiltro(solicitudes);
+    actualizarMetricas(solicitudes);
 
-    const visibles = ordenar(filtrar(todas));
+    const visibles = ordenar(filtrar(solicitudes));
     tbody.innerHTML = '';
 
-    if (!todas.length) {
-      emptyState.hidden = false;
-    } else {
-      emptyState.hidden = true;
-    }
+    emptyState.hidden = solicitudes.length > 0;
 
     visibles.forEach((lead) => tbody.appendChild(fila(lead)));
 
-    const total = todas.length;
+    const total = solicitudes.length;
     const mostradas = visibles.length;
     $('[data-count]').textContent = (mostradas === total)
       ? `${total} ${total === 1 ? 'solicitud' : 'solicitudes'}`
       : `${mostradas} de ${total} solicitudes`;
 
-    // marca de orden en el th
     $$('.leads-table th.sortable').forEach((th) => th.setAttribute('aria-sort', orden.dir === 'asc' ? 'ascending' : 'descending'));
   }
 
@@ -176,7 +200,7 @@
   const csvCampo = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
 
   function exportarCsv() {
-    const lista = ordenar(filtrar(leer()));
+    const lista = ordenar(filtrar(solicitudes));
     if (!lista.length) return alert('No hay solicitudes para exportar.');
     const cab = ['Fecha', 'Hora', 'Nombre', 'Teléfono', 'Email', 'Zona', 'Mudanza', 'Ambientes', 'Cuándo'];
     const filas = lista.map((l) => [
@@ -186,7 +210,7 @@
   }
 
   function exportarEmails() {
-    const lista = leer().filter((l) => l.email && l.email.trim());
+    const lista = solicitudes.filter((l) => l.email && l.email.trim());
     if (!lista.length) return alert('Todavía no hay solicitudes con email cargado.');
     const cab = ['Nombre', 'Email'];
     const filas = lista.map((l) => [l.nombre, l.email].map(csvCampo).join(';'));
@@ -207,28 +231,22 @@
     });
   });
 
-  tbody.addEventListener('click', (e) => {
+  tbody.addEventListener('click', async (e) => {
     const del = e.target.closest('.row-btn--del');
     if (!del) return;
     const id = del.closest('tr').dataset.id;
-    const lead = leer().find((l) => l.id === id);
-    if (lead && confirm(`¿Borrar la solicitud de ${lead.nombre}?`)) {
-      guardar(leer().filter((l) => l.id !== id));
-      render();
-    }
-  });
+    const lead = solicitudes.find((l) => l.id === id);
+    if (!lead || !confirm(`¿Borrar la solicitud de ${lead.nombre}?`)) return;
 
-  $('[data-seed]').addEventListener('click', () => { sembrarEjemplos(true); render(); });
-  $('[data-seed-more]').addEventListener('click', () => { sembrarEjemplos(true); render(); });
-  $('[data-clear]').addEventListener('click', () => {
-    if (!leer().length) return;
-    if (confirm('¿Vaciar TODAS las solicitudes? Esta acción no se puede deshacer.')) {
-      guardar([]); render();
+    const resp = await fetch(`/api/leads?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
+    if (!resp.ok) {
+      alert('No se pudo borrar la solicitud.');
+      return;
     }
+    solicitudes = solicitudes.filter((l) => l.id !== id);
+    render();
   });
 
   /* ---------- Inicio ---------- */
-  // La primera vez que se abre el panel sin datos, sembramos ejemplos para la demo.
-  if (!leer().length && !localStorage.getItem(SEED_FLAG)) sembrarEjemplos(false);
-  render();
+  cargarSolicitudes();
 })();

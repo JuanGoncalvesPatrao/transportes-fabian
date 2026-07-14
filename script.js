@@ -14,9 +14,6 @@
     whatsapp: '' // <-- pegá el número acá cuando lo tengas
   };
 
-  // Clave compartida con el panel de administración (admin.js)
-  const STORAGE_KEY = 'mc_solicitudes';
-
   /* ---------------------------------------------------------------------- */
   const $  = (s, c = document) => c.querySelector(s);
   const $$ = (s, c = document) => [...c.querySelectorAll(s)];
@@ -236,7 +233,10 @@
     });
   });
 
-  form.addEventListener('submit', (e) => {
+  const submitBtn = form.querySelector('[type="submit"]');
+  const formError = $('[data-form-error]');
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!seleccion) return;
 
@@ -251,17 +251,26 @@
       return;
     }
 
-    guardarSolicitud();
+    if (formError) formError.hidden = true;
+    if (submitBtn) submitBtn.disabled = true;
+
+    const ok = await guardarSolicitud();
+
+    if (submitBtn) submitBtn.disabled = false;
+
+    if (!ok) {
+      if (formError) formError.hidden = false;
+      return;
+    }
+
     mostrarExito();
   });
 
   const getCuando = () => (form.querySelector('input[name="cuando"]:checked') || {}).value || '';
 
-  /* ----- Guardar la solicitud (localStorage, compartido con el panel) ----- */
-  function guardarSolicitud() {
+  /* ----- Guardar la solicitud en el backend ----- */
+  async function guardarSolicitud() {
     const solicitud = {
-      id: (crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random())),
-      ts: new Date().toISOString(),
       nombre: nombre.value.trim(),
       telefono: telefono.value.trim(),
       email: email.value.trim(),
@@ -272,11 +281,15 @@
       ambientes: seleccion.amb
     };
     try {
-      const lista = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-      lista.push(solicitud);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(lista));
+      const resp = await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(solicitud)
+      });
+      return resp.ok;
     } catch (err) {
-      console.warn('No se pudo guardar la solicitud:', err);
+      console.warn('No se pudo enviar la solicitud:', err);
+      return false;
     }
   }
 

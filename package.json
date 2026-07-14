@@ -1,0 +1,12 @@
+{
+  "name": "mudanzas-centenera",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Landing + panel admin de Mudanzas Centenera, con backend serverless (Vercel + Supabase)",
+  "scripts": {
+    "hash-password": "node scripts/hash-password.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.4"
+  }
+}
