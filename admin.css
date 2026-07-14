@@ -37,6 +37,31 @@
   font-size: clamp(1.8rem, 1.4rem + 1.5vw, 2.4rem); color: var(--brand-600); letter-spacing: -0.02em; line-height: 1.1; }
 .metric span { color: var(--ink-soft); font-size: var(--step--1); }
 
+@media (max-width: 640px) {
+  .metrics { grid-template-columns: repeat(3, 1fr); gap: .5rem; }
+  .metric { padding: .7rem .5rem; text-align: center; }
+  .metric strong { font-size: clamp(1.2rem, 1rem + 2vw, 1.6rem); }
+  .metric span { font-size: .72rem; line-height: 1.25; }
+}
+
+/* ---------- Bienvenida (transición post-login) ---------- */
+.admin-welcome:not([hidden]) { display: flex; justify-content: center; align-items: center;
+  min-height: 60vh; }
+.admin-welcome-inner { text-align: center; opacity: 0; transform: translateY(10px) scale(.97);
+  animation: welcome-in .5s var(--ease-out, ease-out) forwards; }
+.admin-welcome-check { display: inline-flex; align-items: center; justify-content: center;
+  width: 64px; height: 64px; border-radius: 50%; background: oklch(0.9 0.1 150 / .2);
+  color: oklch(0.55 0.16 150); margin-bottom: 1.2rem; }
+.admin-welcome-check svg { width: 32px; height: 32px; }
+.admin-welcome-inner h1 { font-size: var(--step-3); font-weight: 800; }
+
+@keyframes welcome-in {
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+[data-admin-view], [data-welcome-view] { transition: opacity .35s ease; }
+[data-admin-view].is-entering, [data-welcome-view].is-leaving { opacity: 0; }
+
 /* ---------- Toolbar ---------- */
 .toolbar { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between;
   margin-bottom: 1rem; }

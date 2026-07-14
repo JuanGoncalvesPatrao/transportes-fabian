@@ -12,9 +12,12 @@
   const $$ = (s, c = document) => [...c.querySelectorAll(s)];
 
   const loginView = $('[data-login-view]');
+  const welcomeView = $('[data-welcome-view]');
   const adminView = $('[data-admin-view]');
   const loginForm = $('[data-login-form]');
   const loginError = $('[data-login-error]');
+
+  const esperar = (ms) => new Promise((r) => setTimeout(r, ms));
 
   const tbody = $('[data-tbody]');
   const template = $('[data-row-template]');
@@ -44,7 +47,7 @@
   }
 
   /* ---------- Sesión ---------- */
-  async function cargarSolicitudes() {
+  async function cargarSolicitudes({ bienvenida = false } = {}) {
     const resp = await fetch('/api/leads', { credentials: 'same-origin' });
     if (resp.status === 401) {
       mostrarLogin();
@@ -55,18 +58,32 @@
       return;
     }
     solicitudes = await resp.json();
-    mostrarAdmin();
+    await mostrarAdmin({ bienvenida });
     render();
   }
 
   function mostrarLogin() {
     loginView.hidden = false;
+    welcomeView.hidden = true;
     adminView.hidden = true;
   }
 
-  function mostrarAdmin() {
-    loginView.hidden = true;
+  async function mostrarAdmin({ bienvenida = false } = {}) {
+    if (bienvenida) {
+      loginView.hidden = true;
+      welcomeView.hidden = false;
+      await esperar(1400);
+      welcomeView.classList.add('is-leaving');
+      await esperar(350);
+      welcomeView.hidden = true;
+      welcomeView.classList.remove('is-leaving');
+    } else {
+      loginView.hidden = true;
+      welcomeView.hidden = true;
+    }
+    adminView.classList.add('is-entering');
     adminView.hidden = false;
+    requestAnimationFrame(() => requestAnimationFrame(() => adminView.classList.remove('is-entering')));
   }
 
   loginForm.addEventListener('submit', async (e) => {
@@ -87,7 +104,7 @@
         return;
       }
       loginForm.reset();
-      await cargarSolicitudes();
+      await cargarSolicitudes({ bienvenida: true });
     } catch {
       loginError.hidden = false;
     } finally {
@@ -178,14 +195,9 @@
     const enSemana = lista.filter((l) => new Date(l.ts).getTime() >= semana).length;
     const conEmail = lista.filter((l) => l.email && l.email.trim()).length;
 
-    const conteo = {};
-    lista.forEach((l) => { conteo[l.vehiculo] = (conteo[l.vehiculo] || 0) + 1; });
-    const top = Object.entries(conteo).sort((a, b) => b[1] - a[1])[0];
-
     $('[data-metric-total]').textContent = lista.length;
     $('[data-metric-week]').textContent = enSemana;
     $('[data-metric-emails]').textContent = conEmail;
-    $('[data-metric-top]').textContent = top ? top[0] : '—';
   }
 
   /* ---------- Exportar ---------- */
