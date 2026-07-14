@@ -22,7 +22,7 @@
 .admin-title p { color: var(--ink-soft); margin-top: .3rem; }
 
 /* ---------- Login ---------- */
-.admin-login { display: flex; justify-content: center; padding-block: clamp(2.5rem, 8vw, 5rem); }
+.admin-login:not([hidden]) { display: flex; justify-content: center; padding-block: clamp(2.5rem, 8vw, 5rem); }
 .admin-login-form { width: 100%; max-width: 380px; background: var(--bg); border: 1px solid var(--line);
   border-radius: var(--r-lg); padding: clamp(1.5rem, 4vw, 2rem); }
 .admin-login-form h1 { font-size: var(--step-2); font-weight: 800; margin-bottom: .4rem; }
