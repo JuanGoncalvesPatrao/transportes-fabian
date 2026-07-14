@@ -133,6 +133,6 @@
   .leads-table tbody td { border: 0; padding: .3rem 1rem; }
   .leads-table tbody td::before { content: attr(data-label); display: inline-block; width: 90px;
     font-weight: 700; color: var(--ink-soft); font-size: .78rem; }
-  .col-actions { text-align: left; padding-top: .6rem !important; }
+  .col-actions { text-align: right; padding-top: .6rem !important; }
   .col-actions::before { display: none !important; }
 }
