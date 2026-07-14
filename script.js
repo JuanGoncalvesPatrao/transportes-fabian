@@ -11,7 +11,7 @@
      Dejalo en '' para que el sitio funcione sin WhatsApp.
      ---------------------------------------------------------------------- */
   const CONFIG = {
-    whatsapp: '' // <-- pegá el número acá cuando lo tengas
+    whatsapp: '5491136762325'
   };
 
   /* ---------------------------------------------------------------------- */
