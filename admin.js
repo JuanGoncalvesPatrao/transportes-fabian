@@ -33,18 +33,18 @@
     const ahora = Date.now();
     const h = 3600e3, d = 24 * h;
     const base = [
-      { nombre: 'Marina López',      telefono: '11 5623 8890', email: 'marina.lopez@gmail.com', zona: 'Caballito, CABA',      vehiculo: 'Pickup 250', vehiculoId: 'pickup-250', ambientes: '2 ambientes', off: 2 * h },
-      { nombre: 'Diego Fernández',   telefono: '11 3344 1276', email: '',                       zona: 'Flores, CABA',        vehiculo: 'Camión',     vehiculoId: 'camion',     ambientes: '4 ambientes', off: 6 * h },
-      { nombre: 'Sofía Gutiérrez',   telefono: '11 6698 4521', email: 'sofiag@hotmail.com',      zona: 'Villa Urquiza, CABA', vehiculo: 'Pickup 100', vehiculoId: 'pickup-100', ambientes: '1 ambiente',  off: 1 * d + 3 * h },
-      { nombre: 'Rodrigo Paz',       telefono: '11 2211 7788', email: 'rodri.paz@gmail.com',     zona: 'San Isidro, GBA Norte', vehiculo: 'Camión XL', vehiculoId: 'camion-xl', ambientes: '5 ambientes', off: 2 * d },
-      { nombre: 'Carla Domínguez',   telefono: '11 4455 9012', email: 'carladom@yahoo.com.ar',   zona: 'Lanús, GBA Sur',      vehiculo: 'Pickup 350', vehiculoId: 'pickup-350', ambientes: '3 ambientes', off: 3 * d + 5 * h },
-      { nombre: 'Javier Ríos',       telefono: '11 7890 3344', email: '',                       zona: 'Morón, GBA Oeste',    vehiculo: 'Pickup 250', vehiculoId: 'pickup-250', ambientes: '2 ambientes', off: 5 * d + 8 * h }
+      { nombre: 'Marina López',      telefono: '11 5623 8890', email: 'marina.lopez@gmail.com', zona: 'Caballito, CABA',      vehiculo: 'Pickup 250', vehiculoId: 'pickup-250', ambientes: '2 ambientes', cuando: 'Este mes',      off: 2 * h },
+      { nombre: 'Diego Fernández',   telefono: '11 3344 1276', email: '',                       zona: 'Flores, CABA',        vehiculo: 'Camión',     vehiculoId: 'camion',     ambientes: '4 ambientes', cuando: 'Esta semana',   off: 6 * h },
+      { nombre: 'Sofía Gutiérrez',   telefono: '11 6698 4521', email: 'sofiag@hotmail.com',      zona: 'Villa Urquiza, CABA', vehiculo: 'Pickup 100', vehiculoId: 'pickup-100', ambientes: '1 ambiente',  cuando: 'Más adelante',  off: 1 * d + 3 * h },
+      { nombre: 'Rodrigo Paz',       telefono: '11 2211 7788', email: 'rodri.paz@gmail.com',     zona: 'San Isidro, GBA Norte', vehiculo: 'Camión XL', vehiculoId: 'camion-xl', ambientes: '5 ambientes', cuando: 'Este mes',      off: 2 * d },
+      { nombre: 'Carla Domínguez',   telefono: '11 4455 9012', email: 'carladom@yahoo.com.ar',   zona: 'Lanús, GBA Sur',      vehiculo: 'Pickup 350', vehiculoId: 'pickup-350', ambientes: '3 ambientes', cuando: 'Esta semana',   off: 3 * d + 5 * h },
+      { nombre: 'Javier Ríos',       telefono: '11 7890 3344', email: '',                       zona: 'Morón, GBA Oeste',    vehiculo: 'Pickup 250', vehiculoId: 'pickup-250', ambientes: '2 ambientes', cuando: '',              off: 5 * d + 8 * h }
     ];
     return base.map((x, i) => ({
       id: 'seed-' + i,
       ts: new Date(ahora - x.off).toISOString(),
       nombre: x.nombre, telefono: x.telefono, email: x.email, zona: x.zona,
-      vehiculo: x.vehiculo, vehiculoId: x.vehiculoId, ambientes: x.ambientes
+      vehiculo: x.vehiculo, vehiculoId: x.vehiculoId, ambientes: x.ambientes, cuando: x.cuando
     }));
   }
 
@@ -135,6 +135,7 @@
     set('.cell-zone', lead.zona, 'Zona');
     row.querySelector('.cell-vehicle').setAttribute('data-label', 'Mudanza');
     row.querySelector('.veh-tag').textContent = `${lead.vehiculo} · ${lead.ambientes}`;
+    set('.cell-cuando', lead.cuando, 'Cuándo');
 
     row.querySelector('.row-btn--wa').href = waLink(lead);
     return row;
@@ -177,9 +178,9 @@
   function exportarCsv() {
     const lista = ordenar(filtrar(leer()));
     if (!lista.length) return alert('No hay solicitudes para exportar.');
-    const cab = ['Fecha', 'Hora', 'Nombre', 'Teléfono', 'Email', 'Zona', 'Mudanza', 'Ambientes'];
+    const cab = ['Fecha', 'Hora', 'Nombre', 'Teléfono', 'Email', 'Zona', 'Mudanza', 'Ambientes', 'Cuándo'];
     const filas = lista.map((l) => [
-      fmtFecha(l.ts), fmtHora(l.ts), l.nombre, l.telefono, l.email, l.zona, l.vehiculo, l.ambientes
+      fmtFecha(l.ts), fmtHora(l.ts), l.nombre, l.telefono, l.email, l.zona, l.vehiculo, l.ambientes, l.cuando
     ].map(csvCampo).join(';'));
     descargar(`solicitudes-mudanzas-centenera-${hoy()}.csv`, [cab.join(';'), ...filas].join('\r\n'));
   }

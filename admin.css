@@ -65,7 +65,7 @@
 .c-time { display: block; color: var(--ink-soft); font-size: .8rem; }
 .cell-name { font-weight: 600; color: var(--ink); }
 .cell-phone, .cell-email { font-variant-numeric: tabular-nums; }
-.cell-email:empty::after, .cell-zone:empty::after { content: "—"; color: var(--ink-soft); }
+.cell-email:empty::after, .cell-zone:empty::after, .cell-cuando:empty::after { content: "—"; color: var(--ink-soft); }
 .veh-tag { display: inline-block; background: oklch(0.53 0.16 256 / .12); color: var(--brand-700);
   font-weight: 600; font-size: .78rem; padding: .2rem .6rem; border-radius: var(--r-pill); white-space: nowrap; }
 

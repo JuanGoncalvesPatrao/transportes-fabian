@@ -255,6 +255,8 @@
     mostrarExito();
   });
 
+  const getCuando = () => (form.querySelector('input[name="cuando"]:checked') || {}).value || '';
+
   /* ----- Guardar la solicitud (localStorage, compartido con el panel) ----- */
   function guardarSolicitud() {
     const solicitud = {
@@ -264,6 +266,7 @@
       telefono: telefono.value.trim(),
       email: email.value.trim(),
       zona: zona.value.trim(),
+      cuando: getCuando(),
       vehiculoId: seleccion.id,
       vehiculo: seleccion.nombre,
       ambientes: seleccion.amb
@@ -287,6 +290,7 @@
     ];
     if (email.value.trim()) partes.push(`• Email: ${email.value.trim()}`);
     if (zona.value.trim()) partes.push(`• Zona: ${zona.value.trim()}`);
+    if (getCuando()) partes.push(`• Cuándo: ${getCuando()}`);
     return partes.join('\n');
   };
 
@@ -299,6 +303,7 @@
       Teléfono: ${escapeHtml(telefono.value.trim())}
       ${email.value.trim() ? `<br>Email: ${escapeHtml(email.value.trim())}` : ''}
       ${zona.value.trim() ? `<br>Zona: ${escapeHtml(zona.value.trim())}` : ''}
+      ${getCuando() ? `<br>Cuándo: ${escapeHtml(getCuando())}` : ''}
     `;
 
     // Botón de WhatsApp (solo si hay número configurado)
@@ -325,6 +330,7 @@
     showError(nombre, false);
     showError(telefono, false);
     $$('input[name="vehiculo"]').forEach((r) => (r.checked = false));
+    $$('input[name="cuando"]').forEach((r) => (r.checked = false));
     scrollSuave($('#servicios'), 'start');
   });
 

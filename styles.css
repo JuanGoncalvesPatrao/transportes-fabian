@@ -30,7 +30,7 @@
   /* Tipografía */
   --font-display: "Archivo", system-ui, sans-serif;
   --font-body:    "Hanken Grotesk", system-ui, sans-serif;
-  --font-script:  "Kaushan Script", cursive;
+  --font-script:  "Fjalla One", system-ui, sans-serif;
 
   /* Escala fluida */
   --step--1: clamp(0.83rem, 0.80rem + 0.15vw, 0.92rem);
@@ -143,7 +143,8 @@ p { text-wrap: pretty; }
 .brand-mark-azul { opacity: 0; }
 .site-header[data-scrolled] .brand-mark-white { opacity: 0; }
 .site-header[data-scrolled] .brand-mark-azul { opacity: 1; }
-.brand-name { font-family: var(--font-script); font-size: 1.5rem; line-height: 1; padding-top: .25rem; }
+.brand-name { font-family: var(--font-script); font-size: 1.3rem; line-height: 1; padding-top: .25rem;
+  text-transform: uppercase; letter-spacing: .01em; }
 
 .site-header[data-scrolled] {
   background: oklch(0.995 0.003 250 / .88);
@@ -221,7 +222,8 @@ p { text-wrap: pretty; }
   filter: drop-shadow(0 6px 14px rgba(0,0,0,.25)); }
 .hero-logo img { width: 100%; height: auto; object-fit: contain; display: block; }
 .hero-brand-name { display: block; font-family: var(--font-script); color: #fff;
-  font-size: clamp(1.6rem, 1vw + 1.4rem, 2rem); line-height: 1; margin-bottom: 1.1rem; }
+  font-size: clamp(1.5rem, 1vw + 1.3rem, 1.9rem); line-height: 1; margin-bottom: 1.1rem;
+  text-transform: uppercase; letter-spacing: .02em; }
 .stars { display: flex; gap: .2rem; margin-bottom: 1rem; }
 .stars svg { width: 20px; height: 20px; fill: var(--accent); filter: drop-shadow(0 1px 2px rgba(0,0,0,.3)); }
 .hero h1 { font-size: var(--step-4); font-weight: 800; letter-spacing: -0.035em; margin-bottom: .8rem; color: #fff; }
@@ -250,6 +252,24 @@ p { text-wrap: pretty; }
 .benefit-ico svg { width: 26px; height: 26px; }
 .benefit h3 { font-size: var(--step-1); margin-bottom: .4rem; }
 .benefit p { color: var(--ink-soft); font-size: var(--step--1); line-height: 1.55; }
+
+/* ---------- FAQ ---------- */
+.faq { padding: var(--section-y) 0; }
+.faq-list { max-width: 760px; margin-inline: auto; display: grid; gap: .8rem; }
+.faq-item { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md);
+  padding: 1rem 1.3rem; }
+.faq-item summary {
+  cursor: pointer; list-style: none; font-family: var(--font-display); font-weight: 700;
+  font-size: var(--step-0); color: var(--ink); display: flex; align-items: center;
+  justify-content: space-between; gap: 1rem;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: "+"; flex-shrink: 0; font-size: 1.4rem; line-height: 1; color: var(--brand-600);
+  transition: transform .2s var(--ease-out);
+}
+.faq-item[open] summary::after { transform: rotate(45deg); }
+.faq-item p { color: var(--ink-soft); font-size: var(--step--1); line-height: 1.6; margin-top: .8rem; }
 
 /* ==========================================================================
    SERVICIOS / SELECTOR DE PRESUPUESTO
@@ -339,6 +359,20 @@ p { text-wrap: pretty; }
 .field input[aria-invalid="true"] { border-color: oklch(0.55 0.18 25); }
 .field-error { color: oklch(0.5 0.18 25); font-size: var(--step--1); margin-top: .35rem; font-weight: 500; }
 .quote-legal { font-size: .78rem; color: var(--ink-soft); margin-top: .9rem; text-align: center; }
+
+/* Campo "¿Cuándo te mudás?" (chips de selección única) */
+.field-cuando { border: 0; padding: 0; }
+.field-cuando legend { display: block; width: 100%; padding: 0; font-weight: 600;
+  font-size: var(--step--1); margin-bottom: .5rem; }
+.chip-group { display: flex; flex-wrap: wrap; gap: .6rem; }
+.chip-input { position: absolute; opacity: 0; pointer-events: none; }
+.chip { display: inline-flex; align-items: center; padding: .55rem 1.05rem;
+  border-radius: var(--r-pill); border: 1.5px solid var(--line-strong);
+  font-weight: 600; font-size: var(--step--1); color: var(--ink-soft); cursor: pointer;
+  transition: border-color .2s, background-color .2s, color .2s; }
+.chip:hover { border-color: var(--brand); color: var(--ink); }
+.chip-input:checked + .chip { border-color: var(--brand); background: var(--brand); color: #fff; }
+.chip-input:focus-visible + .chip { outline: 3px solid var(--brand); outline-offset: 2px; }
 
 /* Campo de zona con mapa */
 .zona-input { display: flex; gap: .5rem; align-items: stretch; }

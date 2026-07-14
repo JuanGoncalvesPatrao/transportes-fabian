@@ -14,7 +14,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Hanken+Grotesk:wght@400;500;600;700&family=Kaushan+Script&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Hanken+Grotesk:wght@400;500;600;700&family=Fjalla+One&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="styles.css" />
   <script>document.documentElement.classList.replace('no-js','js');</script>
@@ -44,6 +44,7 @@
         <ul class="nav-menu" id="nav-menu" data-nav-menu>
           <li><a href="#cobertura">Cobertura</a></li>
           <li><a href="#nosotros">Nosotros</a></li>
+          <li><a href="#faq">Preguntas</a></li>
           <li><a href="#presupuesto">Presupuesto</a></li>
           <li class="nav-cta"><a class="btn btn-accent btn-sm" href="#presupuesto">Pedir presupuesto</a></li>
         </ul>
@@ -221,6 +222,17 @@
 
             <div class="quote-form">
               <h3>2 · Dejanos tus datos y te pasamos el precio</h3>
+              <fieldset class="field field-cuando">
+                <legend>¿Cuándo te mudás? <span class="opt">(opcional)</span></legend>
+                <div class="chip-group" role="radiogroup" aria-label="¿Cuándo te mudás?">
+                  <input type="radio" name="cuando" id="q-cuando-semana" value="Esta semana" class="chip-input" />
+                  <label for="q-cuando-semana" class="chip">Esta semana</label>
+                  <input type="radio" name="cuando" id="q-cuando-mes" value="Este mes" class="chip-input" />
+                  <label for="q-cuando-mes" class="chip">Este mes</label>
+                  <input type="radio" name="cuando" id="q-cuando-despues" value="Más adelante" class="chip-input" />
+                  <label for="q-cuando-despues" class="chip">Más adelante</label>
+                </div>
+              </fieldset>
               <div class="field">
                 <label for="q-nombre">Nombre</label>
                 <input type="text" id="q-nombre" name="nombre" autocomplete="name" required placeholder="Ej: Juan Pérez" />
@@ -304,6 +316,50 @@
             <p>El presupuesto que te pasamos es el que pagás. Sin extras inventados el día de la mudanza.</p>
           </li>
         </ul>
+      </div>
+    </section>
+
+    <!-- ===== FAQ ===== -->
+    <section class="faq" id="faq" aria-labelledby="faq-title">
+      <div class="wrap">
+        <header class="section-head reveal">
+          <h2 id="faq-title">Preguntas frecuentes</h2>
+          <p class="section-lead">Lo que más nos preguntan antes de reservar la mudanza.</p>
+        </header>
+        <div class="faq-list reveal">
+          <details class="faq-item">
+            <summary>¿El presupuesto tiene costo?</summary>
+            <p>No, el presupuesto es sin cargo. Te lo pasamos por WhatsApp o teléfono el mismo día.</p>
+          </details>
+          <details class="faq-item">
+            <summary>¿Piden seña o adelanto?</summary>
+            <p>No. Pagás al finalizar el trabajo, con el medio de pago que prefieras.</p>
+          </details>
+          <details class="faq-item">
+            <summary>¿Qué pasa si llueve el día de la mudanza?</summary>
+            <p>Trabajamos igual: protegemos la carga con mantas y film. Si hace falta reprogramar, lo coordinamos con vos sin costo.</p>
+          </details>
+          <details class="faq-item">
+            <summary>¿Desarman y arman los muebles?</summary>
+            <p>Sí. Contanoslo al pedir el presupuesto para llevar las herramientas necesarias.</p>
+          </details>
+          <details class="faq-item">
+            <summary>¿Trabajan fines de semana?</summary>
+            <p>Sí, sábados de 8 a 14 h. Domingos y feriados, a convenir.</p>
+          </details>
+          <details class="faq-item">
+            <summary>¿Qué medios de pago aceptan?</summary>
+            <p>Efectivo, transferencia y Mercado Pago.</p>
+          </details>
+          <details class="faq-item">
+            <summary>¿Puedo cambiar la fecha si surge un imprevisto?</summary>
+            <p>Sí, avisanos con anticipación y la reprogramamos sin problema.</p>
+          </details>
+          <details class="faq-item">
+            <summary>¿Hacen mudanzas fuera de CABA y GBA?</summary>
+            <p>Consultanos tu caso puntual: según la zona, lo evaluamos.</p>
+          </details>
+        </div>
       </div>
     </section>
 
