@@ -300,7 +300,14 @@ p { text-wrap: pretty; }
 
 .v-ambientes { font-family: var(--font-display); font-weight: 700; font-size: var(--step--1);
   color: var(--brand-600); letter-spacing: .01em; }
-.v-illus { width: 100%; height: auto; margin: .4rem 0 .7rem; }
+.v-illus { display: flex; align-items: center; justify-content: center;
+  width: 100%; aspect-ratio: 4 / 3; margin: .4rem 0 .7rem; overflow: hidden; }
+.v-illus img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
+
+/* La foto del Pickup 350 (3 ambientes) vino con un recorte más ajustado
+   que el resto: se agranda y se corre hacia abajo para que no se vea chica */
+.v-illus--pickup-350 img { transform: scale(1) translateY(10%); }
+.v-illus--pickup-100 img { transform: scale(.88); }
 .v-name { font-family: var(--font-display); font-weight: 800; font-size: var(--step-1);
   letter-spacing: -0.02em; color: var(--ink); }
 .v-meta { margin-top: .4rem; font-size: var(--step--1); color: var(--ink-soft); }

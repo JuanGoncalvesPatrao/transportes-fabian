@@ -20,11 +20,11 @@
 
   /* ----- Datos de los vehículos ----- */
   const VEHICULOS = [
-    { id: 'pickup-100', amb: '1 ambiente',  ideal: 'Monoambiente o pocas cosas', nombre: 'Pickup 100', medidas: '2 × 2 × 2 m',       carga: '1.000 kg',  svg: 'truck-pickup-100' },
-    { id: 'pickup-250', amb: '2 ambientes', ideal: 'Departamento chico',         nombre: 'Pickup 250', medidas: '2 × 3 × 2 m',       carga: '1.000 kg',  svg: 'truck-pickup-250' },
-    { id: 'pickup-350', amb: '3 ambientes', ideal: 'Departamento o casa media',  nombre: 'Pickup 350', medidas: '2,2 × 4 × 2,2 m',   carga: '3.000 kg',  svg: 'truck-pickup-350' },
-    { id: 'camion',     amb: '4 ambientes', ideal: 'Casa familiar',              nombre: 'Camión',     medidas: '2 × 4,9 × 2 m',     carga: '3.500 kg',  svg: 'truck-camion' },
-    { id: 'camion-xl',  amb: '5 ambientes', ideal: 'Casa grande u oficina',      nombre: 'Camión XL',  medidas: '2,5 × 7 × 2,5 m',   carga: '11.500 kg', svg: 'truck-camion-xl' }
+    { id: 'pickup-100', amb: '1 ambiente',  ideal: 'Monoambiente o pocas cosas', nombre: 'Pickup 100', medidas: '2 × 2 × 2 m',       carga: '1.000 kg',  img: 'assets/sprinter-1-ambiente.png' },
+    { id: 'pickup-250', amb: '2 ambientes', ideal: 'Departamento chico',         nombre: 'Pickup 250', medidas: '2 × 3 × 2 m',       carga: '1.000 kg',  img: 'assets/sprinter-1-ambiente.png' },
+    { id: 'pickup-350', amb: '3 ambientes', ideal: 'Departamento o casa media',  nombre: 'Pickup 350', medidas: '2,2 × 4 × 2,2 m',   carga: '3.000 kg',  img: 'assets/camion-1016-3-ambientes.png' },
+    { id: 'camion',     amb: '4 ambientes', ideal: 'Casa familiar',              nombre: 'Camión',     medidas: '2 × 4,9 × 2 m',     carga: '3.500 kg',  img: 'assets/camion-1114-4-ambientes.png' },
+    { id: 'camion-xl',  amb: '5 ambientes', ideal: 'Casa grande u oficina',      nombre: 'Camión XL',  medidas: '2,5 × 7 × 2,5 m',   carga: '11.500 kg', img: 'assets/camion-2426-5-ambientes.png' }
   ];
 
   /* ----- Año dinámico en el footer ----- */
@@ -130,7 +130,7 @@
       <label for="veh-${v.id}">
         <span class="v-check"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-check"/></svg></span>
         <span class="v-ambientes">${v.amb}</span>
-        <svg class="v-illus" viewBox="0 0 200 110" role="img" aria-label="${v.nombre}"><use href="#${v.svg}"/></svg>
+        <span class="v-illus v-illus--${v.id}"><img src="${v.img}" alt="${v.nombre}" loading="lazy" /></span>
         <span class="v-name">${v.nombre}</span>
         <span class="v-meta">Carga hasta <strong>${v.carga}</strong></span>
       </label>
